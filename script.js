@@ -215,11 +215,12 @@ const startLogOutTimer = function () {
   //call the timer every second
   tick();
   const timer = setInterval(tick, 1000);
+  return timer;
 };
 
 ///////////////////////////////////////
 // Event handlers
-let currentAccount;
+let currentAccount, timer;
 
 // Fake always logged in
 // currentAccount = account1;
@@ -274,7 +275,8 @@ btnLogin.addEventListener('click', function (e) {
     inputLoginUsername.value = inputLoginPin.value = '';
     inputLoginPin.blur();
 
-    startLogOutTimer();
+    if (timer) clearInterval(timer);
+    timer = startLogOutTimer();
 
     // Update UI
     updateUI(currentAccount);
@@ -305,6 +307,10 @@ btnTransfer.addEventListener('click', function (e) {
 
     // Update UI
     updateUI(currentAccount);
+
+    // reset timer
+    clearInterval(timer);
+    timer = startLogOutTimer();
   }
 });
 
@@ -323,6 +329,9 @@ btnLoan.addEventListener('click', function (e) {
 
       // Update UI
       updateUI(currentAccount);
+      // reset timer
+      clearInterval(timer);
+      timer = startLogOutTimer();
     }, 3000);
   }
   inputLoanAmount.value = '';
